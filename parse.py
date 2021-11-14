@@ -7,20 +7,22 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument('-rent','--is_rent',action="store_true",
                     help="scan rent instead of real estate")
-args = parser.parse_args()
+parser.add_argument('-city','--city',type=str,default='moskva',
+                    help="city choose to scan (name in translit exp : moskva)")
 
+args = parser.parse_args()
 
 
 
 DB_PATH = r"data\avito_real_estate.db"
 
-TABLE_NAME = "moscow_RE"
-START_URL_PAGE = 'https://www.avito.ru/moskva/kvartiry/prodam/vtorichka-ASgBAQICAUSSA8YQAUDmBxSMUg?cd=1&f=ASgBAQICAUSSA8YQBkDmBxSMUsoIJIRZglnmFhTm_AGQvg0Ulq41rL4NFKTHNcDBDRS6_Tc&p=1'
+TABLE_NAME = f"{args.city}_RE"
+START_URL_PAGE = f'https://www.avito.ru/{args.city}/kvartiry/prodam/vtorichka-ASgBAQICAUSSA8YQAUDmBxSMUg?cd=1&f=ASgBAQICAUSSA8YQBkDmBxSMUsoIJIRZglnmFhTm_AGQvg0Ulq41rL4NFKTHNcDBDRS6_Tc&p=1'
 
 if args.is_rent:
     
-    TABLE_NAME = "moscow_rent"
-    START_URL_PAGE = 'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&f=ASgBAQICAkSSA8gQ8AeQUgNAzAgkjFmOWegWFOj8Aay~DRSkxzU&p=1'
+    TABLE_NAME = f"{args.city}_rent"
+    START_URL_PAGE = f'https://www.avito.ru/{args.city}/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&f=ASgBAQICAkSSA8gQ8AeQUgNAzAgkjFmOWegWFOj8Aay~DRSkxzU&p=1'
 
 
 logging.basicConfig(level=logging.INFO,filename=rf'data\{TABLE_NAME}.log',format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
