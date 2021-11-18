@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 
 
-DB_PATH = r"data\avito_real_estate.db"
+DB_PATH = r"data/avito_real_estate.db"
 
 TABLE_NAME = "moscow_RE"
 START_URL_PAGE = 'https://www.avito.ru/moskva/kvartiry/prodam/vtorichka-ASgBAQICAUSSA8YQAUDmBxSMUg?cd=1&f=ASgBAQICAUSSA8YQBkDmBxSMUsoIJIRZglnmFhTm_AGQvg0Ulq41rL4NFKTHNcDBDRS6_Tc&p=1'
