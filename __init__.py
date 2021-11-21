@@ -8,7 +8,7 @@ from tqdm import tqdm
 import logging
 import argparse
 
-
+#docker build -t rent_scan . | docker run --name scan_moscow -d -v rent_data_valut:/home/project/data:ro rent_scan
 
 
 
