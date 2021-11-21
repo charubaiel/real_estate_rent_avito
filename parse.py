@@ -23,7 +23,7 @@ if args.is_rent:
     START_URL_PAGE = 'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&f=ASgBAQICAkSSA8gQ8AeQUgNAzAgkjFmOWegWFOj8Aay~DRSkxzU&p=1'
 
 
-logging.basicConfig(level=logging.INFO,filename=rf'data\{TABLE_NAME}.log',format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+logging.basicConfig(level=logging.INFO,filename=rf'data/{TABLE_NAME}.log',format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
 
 
 if __name__ == '__main__':

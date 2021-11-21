@@ -10,6 +10,8 @@ import argparse
 
 
 
+
+
 def get_item_list(html_data):
     bs = BeautifulSoup(html_data,features="lxml")
     return bs.find('div',{'class':'items-items-kAJAg'}).findAll('div',{'data-marker':'item'})

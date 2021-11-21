@@ -1,0 +1,6 @@
+* * * * * cd /home/project && $(which python3) parse.py >> /var/log/cron.log
+* * * * * cd /home/project && $(which python3) parse.py -rent >> /var/log/cron.log
+* * * * * cd /home/project && $(which git) add . >> /var/log/cron.log
+* * * * * cd /home/project && $(which git) commit -m 'update db' >> /var/log/cron.log
+* * * * * cd /home/project && $(which git) push >> /var/log/cron.log
+##
