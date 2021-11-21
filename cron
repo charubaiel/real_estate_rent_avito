@@ -1,6 +1,3 @@
-0 10 * * 1,3,5 cd /home/project && $(which python3) parse.py >> /var/log/cron.log
-0 10 * * 1,3,5 cd /home/project && $(which python3) parse.py -rent >> /var/log/cron.log
-2 10 * * 1,3,5 cd /home/project && $(which git) add . >> /var/log/cron.log
-3 10 * * 1,3,5 cd /home/project && $(which git) commit -m 'update db' >> /var/log/cron.log
-4 10 * * 1,3,5 cd /home/project && $(which git) push >> /var/log/cron.log
+0 10 * * 1,5 cd /home/project && $(which python3) parse.py >> /var/log/cron.log
+0 10 * * 1,5 cd /home/project && $(which python3) parse.py -rent >> /var/log/cron.log
 ##

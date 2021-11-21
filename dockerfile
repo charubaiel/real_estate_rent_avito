@@ -12,4 +12,5 @@ RUN apt-get update && apt-get -y install cron && pip install --no-cache-dir -r /
 RUN touch /var/log/cron.log && crontab /etc/cron.d/cron
 
 
+
 CMD ["/bin/bash", "-c", "cron && tail -f /var/log/cron.log"]
