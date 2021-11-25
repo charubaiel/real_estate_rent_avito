@@ -7,8 +7,11 @@ import numpy as np
 from tqdm import tqdm
 import logging
 import argparse
+import os
 
 
+
+PWD = os.environ['PROJECT_PATH']
 
 def get_item_list(html_data):
     bs = BeautifulSoup(html_data,features="lxml")

@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 
 
-DB_PATH = r"data\avito_real_estate.db"
+DB_PATH = f"{PWD}data/avito_real_estate.db"
 
 TABLE_NAME = f"{args.city}_RE"
 START_URL_PAGE = f'https://www.avito.ru/{args.city}/kvartiry/prodam/vtorichka-ASgBAQICAUSSA8YQAUDmBxSMUg?cd=1&f=ASgBAQICAUSSA8YQBkDmBxSMUsoIJIRZglnmFhTm_AGQvg0Ulq41rL4NFKTHNcDBDRS6_Tc&p=1'
@@ -25,7 +25,9 @@ if args.is_rent:
     START_URL_PAGE = f'https://www.avito.ru/{args.city}/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&f=ASgBAQICAkSSA8gQ8AeQUgNAzAgkjFmOWegWFOj8Aay~DRSkxzU&p=1'
 
 
-logging.basicConfig(level=logging.INFO,filename=rf'data\{TABLE_NAME}.log',format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+
+logging.basicConfig(level=logging.INFO,filename=rf'{PWD}data/{TABLE_NAME}.log',format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
+
 
 
 if __name__ == '__main__':

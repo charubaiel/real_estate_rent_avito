@@ -1,0 +1,7 @@
+* * * * * echo "Hello world" >> /var/log/cron.log
+* * * * * python home/project/parse.py >> /var/log/cron.log
+* * * * * python home/project/parse.py -rent >> /var/log/cron.log
+* * * * * git -C home/project/ add . >> /var/log/cron.log
+* * * * * git -C home/project/ commit -m 'update db' >> /var/log/cron.log
+* * * * * git -C home/project/ push >> /var/log/cron.log
+# An empty line is required at the end of this file for a valid cron file.
