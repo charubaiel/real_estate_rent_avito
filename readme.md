@@ -1,2 +1,1 @@
-docker build --ssh default=~/.ssh/id_ed25519 -t avito_parser .
- "-c", "python parse.py && git add . && git commit -m 'update db' && git push -u git@github.com:charubaiel/real_estate_rent_avito.git test"
+docker build --build-arg PRIVAT_SSH="$(cat ~/.ssh/id_ed25519)" --build-arg PUBLIC_SSH="$(cat ~/.ssh/id_ed25519.pub)" -t avito_parser .
