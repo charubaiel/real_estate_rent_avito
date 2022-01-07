@@ -1,21 +1,16 @@
-FROM python:3.10
+FROM python:3.10-slim
 
 
 
-RUN apt-get update && apt-get install -y cron && apt-get install nano
+RUN apt-get update && apt-get install nano && apt-get install -y git
+RUN git config --global user.email "aleksandrin.a@mail.ru" && git config --global user.name "Charubaiel"
 
 ENV PROJECT_PATH /home/project/
 
 COPY . /home/project/
 WORKDIR /home/project/
 
+RUN --mount=type=ssh mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts 
 RUN pip install --no-cache-dir -r req.txt
 
-COPY cron /etc/cron.d/cron
-
-RUN touch  /var/log/cron.log
-RUN chmod 0744 /etc/cron.d/cron
-RUN crontab /etc/cron.d/cron
-
-
-CMD ["/bin/bash", "-c", "cron && tail -f /var/log/cron.log"]
+CMD ["/bin/bash"]
