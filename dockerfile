@@ -4,14 +4,14 @@ ARG PRIVAT_SSH
 ARG PUBLIC_SSH
 
 RUN apt-get update && apt-get install nano && apt-get install -y git
-RUN git config --global user.email "aleksandrin.a@mail.ru" && git config --global user.name "Charubaiel"
+RUN git config --global user.email "aleksandrin.a@mail.ru" && git config --global user.name "Oracle_Server"
 
 ENV PROJECT_PATH /home/project/
 
 COPY . /home/project/
 WORKDIR /home/project/
 
-RUN --mount=type=ssh mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts 
+RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts 
 RUN echo "$PRIVAT_SSH" > ~/.ssh/id_ed25519 && \
     echo "$PUBLIC_SSH" > ~/.ssh/id_ed25519.pub && \
     chmod 600 ~/.ssh/id_ed25519 && \
