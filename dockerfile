@@ -4,12 +4,8 @@ ARG PRIVAT_SSH
 ARG PUBLIC_SSH
 
 RUN apt-get update && apt-get install nano && apt-get install -y git
-<<<<<<< HEAD
 RUN git config --global user.email "aleksandrin.a@mail.ru" \
 	&& git config --global user.name "Oracle_Server"
-=======
-RUN git config --global user.email "aleksandrin.a@mail.ru" && git config --global user.name "Oracle_Server"
->>>>>>> 4ccf7fae298383f86bdf709fa35b292596fcad4b
 
 ENV PROJECT_PATH /home/project/
 
@@ -24,8 +20,5 @@ RUN echo "$PRIVAT_SSH" > ~/.ssh/id_ed25519 && \
 
 RUN pip install --no-cache-dir -r req.txt
 
-<<<<<<< HEAD
+
 CMD ["/bin/bash","-c", "git switch test && git fetch && git pull --rebase && python parse.py && git add . && git commit -m 'update db' && git push -u git@github.com:charubaiel/real_estate_rent_avito.git test"]
-=======
-CMD ["/bin/bash","-c", "python parse.py && git add . && git commit -m 'update db' && git push -u git@github.com:charubaiel/real_estate_rent_avito.git test"]
->>>>>>> 4ccf7fae298383f86bdf709fa35b292596fcad4b
