@@ -1,3 +1,4 @@
+from pkgutil import extend_path
 import pandas as pd
 import requests as r
 import sqlite3
@@ -11,7 +12,10 @@ import os
 
 
 
-PWD = os.environ['PROJECT_PATH']
+try:
+    PWD = os.environ['PROJECT_PATH']
+except:
+    PWD = '/'
 
 def get_item_list(html_data):
     bs = BeautifulSoup(html_data,features="lxml")
