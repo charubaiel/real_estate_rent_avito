@@ -1,6 +1,0 @@
-requests
-pandas
-tqdm
-bs4
-numpy
-lxml

@@ -1,0 +1,23 @@
+[32m2022-01-19 18:31:11 +0300[0m - dagster - [34mDEBUG[0m - get_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - 5792 - get_avito_page - LOGS_CAPTURED - Started capturing logs for step: get_avito_page.
+[32m2022-01-19 18:31:11 +0300[0m - dagster - [34mDEBUG[0m - get_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - 5792 - get_avito_page - STEP_START - Started execution of step "get_avito_page".
+[32m2022-01-19 18:31:11 +0300[0m - dagster - [34mDEBUG[0m - get_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - 5792 - get_avito_page - STEP_INPUT - Got input "START_URL_PAGE" of type "Any". (Type check passed).
+[32m2022-01-19 18:31:12 +0300[0m - dagster - [34mDEBUG[0m - get_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - 5792 - get_avito_page - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+[32m2022-01-19 18:31:12 +0300[0m - dagster - [34mDEBUG[0m - get_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - get_avito_page - Writing file at: /home/charubaiel/workflow/real_estate_rent_avito/tmpfomfpxx5/storage/4c4f27d4-6996-4769-8ae6-741c715982fc/get_avito_page/result
+[32m2022-01-19 18:31:12 +0300[0m - dagster - [34mERROR[0m - [31mget_result_df - 4c4f27d4-6996-4769-8ae6-741c715982fc - 5792 - get_avito_page - STEP_FAILURE - Execution of step "get_avito_page" failed.
+
+dagster.core.errors.DagsterExecutionHandleOutputError: Error occurred while handling output "result" of step "get_avito_page"::
+
+RecursionError: maximum recursion depth exceeded while getting the str of an object
+
+Stack Trace:
+  File "/home/charubaiel/.local/lib/python3.8/site-packages/dagster/core/execution/plan/utils.py", line 47, in solid_execution_error_boundary
+    yield
+  File "/home/charubaiel/.local/lib/python3.8/site-packages/dagster/utils/__init__.py", line 387, in iterate_with_context
+    next_output = next(iterator)
+  File "/home/charubaiel/.local/lib/python3.8/site-packages/dagster/core/execution/plan/execute_step.py", line 504, in _gen_fn
+    gen_output = output_manager.handle_output(output_context, output.value)
+  File "/home/charubaiel/.local/lib/python3.8/site-packages/dagster/core/storage/fs_io_manager.py", line 122, in handle_output
+    pickle.dump(obj, write_obj, PICKLE_PROTOCOL)
+  File "/home/charubaiel/.local/lib/python3.8/site-packages/bs4/element.py", line 954, in __getnewargs__
+    return (str(self),)
+[0m

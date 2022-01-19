@@ -1,1 +1,0 @@
-docker build --build-arg PRIVAT_SSH="$(cat ~/.ssh/id_ed25519)" --build-arg PUBLIC_SSH="$(cat ~/.ssh/id_ed25519.pub)" -t avito_parser .
