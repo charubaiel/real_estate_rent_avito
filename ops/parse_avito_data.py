@@ -1,16 +1,15 @@
 from dagster import op
 import pandas as pd
 from utils import get_item_info
-
-
-@op
-def get_item_list(bs_data):
-    return bs_data.find('div',{'class':'items-items-kAJAg'}).findAll('div',{'data-marker':'item'})
+from bs4 import BeautifulSoup
 
 @op
-def get_df_from_html(item_list):
+def get_item_list(html_data):
+    bs_data = BeautifulSoup(html_data.text)
+    item_list = bs_data.find('div',{'class':'items-items-kAJAg'}).findAll('div',{'data-marker':'item'})
     df_scheme = [get_item_info(i) for i in item_list]
     return pd.DataFrame(df_scheme)
+
 
 @op
 def fix_data(df):
