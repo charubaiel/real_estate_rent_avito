@@ -6,7 +6,7 @@ import sqlite3
 def get_item_info(item):
     item_desc = {}
     try:
-        item_desc['date'] = pd.to_datetime('today').date()
+        item_desc['datetime'] = pd.to_datetime('now')
         item_desc['publish_delta'] = item.find('div',{'data-marker':'item-date'}).text
         item_desc['id'] = item['id']
         item_desc['url'] = item.a['href']
