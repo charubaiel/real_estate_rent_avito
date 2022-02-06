@@ -15,6 +15,7 @@ def get_item_info(item):
         item_desc['price'] = item.find('meta',{'itemprop':'price'})['content']
         item_desc['adress'] = item.find('div',{'data-marker':'item-address'}).span.text
         item_desc['metro'] = item.find('div',{'data-marker':'item-address'}).div.text.replace(item_desc['adress'],'').replace('\xa0',' ')
+        item_desc['metro_branch'] = item.find('i',{'class':'geo-icon-Cr9YM'})['style'].replace('background-color:','')
     except:
         pass
 
