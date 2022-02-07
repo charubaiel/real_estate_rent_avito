@@ -1,22 +1,21 @@
 FROM python:3.8-slim
+ARG PRIVAT_SSH
+ARG PUBLIC_SSH
 
 RUN mkdir -p /opt/dagster/dagster_home /opt/dagster/app
+
+
+
+RUN apt-get update && apt-get install nano && apt-get install -y git
+RUN git config --global user.email "aleksandrin.a@mail.ru" \
+	&& git config --global user.name "Oracle_Server"
+RUN pip install dagit dagster-postgres pandas requests lxml numpy bs4
 
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts 
 RUN echo "$PRIVAT_SSH" > ~/.ssh/id_rsa && \
     echo "$PUBLIC_SSH" > ~/.ssh/id_rsa.pub && \
     chmod 600 ~/.ssh/id_rsa && \
     chmod 600 ~/.ssh/id_rsa.pub
-
-RUN pip install dagit dagster-postgres pandas requests lxml numpy bs4
-
-ARG PRIVAT_SSH
-ARG PUBLIC_SSH
-
-RUN apt-get update && apt-get install nano && apt-get install -y git
-RUN git config --global user.email "aleksandrin.a@mail.ru" \
-	&& git config --global user.name "Oracle_Server"
-
 
 # Copy your code and workspace to /opt/dagster/app
 COPY . /opt/dagster/app
