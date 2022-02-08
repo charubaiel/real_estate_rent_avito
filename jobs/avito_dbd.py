@@ -1,6 +1,6 @@
 from ops.get_avito_start_data import *
 from ops.parse_avito_data import fix_data, get_item_list
-from dagster import job, get_dagster_logger as log, op, schedule,repository
+from dagster import job, get_dagster_logger as log, op, schedule,repository,config_from_files
 import sqlite3
 import pandas as pd
 
@@ -19,7 +19,7 @@ def save_to_sql(df_list):
                        .format(i, *pd.read_sql(f"select count(distinct id) as uniq_ids,\
                                          count(id) as ttl_ids from {i} ", con=conn).values[0]))
 
-@job
+@job(config=config_from_files(['ops.yaml']))
 def get_result_df():
 
     save_to_sql(
@@ -61,7 +61,5 @@ def avito_schedule(context):
     return {"ops": {"get_result_df": {"config": {"date": date}}}}
 
 @repository
-def hello_cereal_repository():
+def avito_dagster_parse():
     return [avito_schedule, get_result_df]
-
-

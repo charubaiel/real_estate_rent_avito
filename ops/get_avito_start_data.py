@@ -17,6 +17,7 @@ def get_avito_page1(url):
         log().info(start_page_html.status_code)
         return start_page_html
     else :
+        raise ValueError(start_page_html.text)
         log().info(start_page_html.status_code)
 
 
@@ -33,6 +34,7 @@ def get_avito_page2(url):
         log().info(start_page_html.status_code)
         return start_page_html
     else :
+        raise ValueError(start_page_html.text)
         log().info(start_page_html.status_code)
 
 
@@ -49,6 +51,7 @@ def get_avito_page3(url):
         log().info(start_page_html.status_code)
         return start_page_html
     else :
+        raise ValueError(start_page_html.text)
         log().info(start_page_html.status_code)
 
 @op()
@@ -63,6 +66,7 @@ def get_avito_page4(url):
         log().info(start_page_html.status_code)
         return start_page_html
     else :
+        raise ValueError(start_page_html.text)
         log().info(start_page_html.status_code)
 
 @op()
@@ -77,4 +81,5 @@ def get_avito_page5(url):
         log().info(start_page_html.status_code)
         return start_page_html
     else :
+        raise ValueError(start_page_html.text)
         log().info(start_page_html.status_code)
