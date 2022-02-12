@@ -1,6 +1,6 @@
 from ops.get_avito_start_data import *
 from ops.parse_avito_data import fix_data, get_item_list
-from dagster import job, get_dagster_logger as log, op, schedule,repository,config_from_files
+from dagster import job, get_dagster_logger as log, op, schedule,repository,config_from_files ,ScheduleDefinition
 import sqlite3
 import pandas as pd
 
@@ -50,16 +50,15 @@ def get_result_df():
         )]
     )
 
-@schedule(
-    cron_schedule="0 */6 * * *",
-    job=get_result_df,
-    execution_timezone="Europe/Moscow",
-)
-
-def avito_schedule(context):
-    date = context.scheduled_execution_time.strftime("%Y-%m-%d")
-    return {"ops": {"get_result_df": {"config": {"date": date}}}}
-
+# @schedule(
+#     cron_schedule="16 8,18,23 * * *",
+#     job=get_result_df,
+#     execution_timezone="Europe/Moscow",
+# )
+# def avito_schedule(context):
+#     date = context.scheduled_execution_time.strftime("%Y-%m-%d")
+#     return {"ops": {"save_to_sql": {"config": {"date": date}}}}
+basic_schedule = ScheduleDefinition(job=get_result_df, cron_schedule="28 10,18 * * *",execution_timezone="Europe/Moscow")
 @repository
 def avito_dagster_parse():
-    return [avito_schedule, get_result_df]
+    return [ get_result_df, basic_schedule ]
