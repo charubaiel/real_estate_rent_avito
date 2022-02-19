@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 @op
 def get_item_list(html_data):
-    bs_data = BeautifulSoup(html_data.text)
+    bs_data = BeautifulSoup(html_data.text,features='lxml')
     item_list = bs_data.find('div',{'class':'items-items-kAJAg'}).findAll('div',{'data-marker':'item'})
     df_scheme = [get_item_info(i) for i in item_list]
     return pd.DataFrame(df_scheme)

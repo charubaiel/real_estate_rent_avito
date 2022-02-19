@@ -19,7 +19,7 @@ def save_to_sql(df_list):
                        .format(i, *pd.read_sql(f"select count(distinct id) as uniq_ids,\
                                          count(id) as ttl_ids from {i} ", con=conn).values[0]))
 
-@job(config=config_from_files(['ops.yaml']))
+@job(config=config_from_files(['ops_all.yaml']))
 def get_result_df():
 
     save_to_sql(
