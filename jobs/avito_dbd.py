@@ -50,6 +50,7 @@ def get_result_df():
         )]
     )
 
+
 # @schedule(
 #     cron_schedule="16 8,18,23 * * *",
 #     job=get_result_df,
