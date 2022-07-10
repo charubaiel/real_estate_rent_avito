@@ -1,0 +1,14 @@
+ops:
+  get_urls:
+    config:
+      url: 'https://www.avito.ru/moskva/kvartiry/sdam/na_dlitelnyy_srok-ASgBAgICAkSSA8gQ8AeQUg?cd=1&f=ASgBAQECA0SSA8gQ8AeQUsDBDbr9NwNAzAg0kFmOWYxZ7MENNILPOYbPOYTPOdL7DiSA6~MCguvjAgFF6AcVeyJmcm9tIjozNSwidG8iOm51bGx9&p=1&s=104'
+
+  get_pages:
+    config:
+      sleep_time: 5
+      n_pages : 10
+
+  save_to_sql:
+    config:
+      db_name: 'rent_avito.db'
+      table_name : 'moscow_rent_avito'

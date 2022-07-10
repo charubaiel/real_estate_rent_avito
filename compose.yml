@@ -1,0 +1,24 @@
+version: "3.10"
+
+services:
+
+  avito_rent_monitoring:
+    build:
+      context: .
+      dockerfile: ./dockerfile
+
+    container_name: avito_rent_monitoring
+    image: avito_rent_monitoring_image
+    restart: always
+    ports:
+      - 4000
+    environment:
+      DAGSTER_CURRENT_IMAGE: "avito_rent_monitoring_image"
+    networks:
+      - mlflow_net
+    volumes:
+      - ./data/:/opt/dagster/app/data
+
+networks:
+  mlflow_net:
+    name : 'mlflow_net'
