@@ -1,1 +1,0 @@
-from repositories.avito_parse_rep import avito_dagster_parse

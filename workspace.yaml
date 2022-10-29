@@ -1,4 +1,3 @@
 load_from:
-  - python_file: jobs/avito_dbd.py
-      # relative_path: jobs/avito_dbd.py
-      # working_directory: /home/charubaiel/workspace/real_estate_rent_avito/
+  - python_file: repositories/avito_parse_rep.py
+      

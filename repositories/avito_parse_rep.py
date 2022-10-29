@@ -1,6 +1,5 @@
 
-from jobs.avito_dbd import parse_avito_data
-from schedules.rent_avito_schedule import avito_schedule
+from repositories.jobs.avito_dbd import parse_avito_data,avito_schedule
 from dagster import repository
 
 
