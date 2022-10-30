@@ -1,14 +1,20 @@
 FROM python:3.8-slim
 
+ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ENV DAGSTER_PORT=3000
+ENV POETRY_VIRTUALENVS_CREATE=False
+
+RUN mkdir -p /opt/dagster/dagster_home /opt/dagster/app
+RUN touch /opt/dagster/dagster_home/dagster.yaml 
 
 WORKDIR /opt/dagster/app
-COPY . /opt/dagster/app
 
-RUN apt-get update && apt-get upgrade
-RUN apt-get install libgomp1
-RUN pip install poetry
+COPY . /opt/dagster/app/
 
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi
+RUN apt-get update
 
-CMD ["dagit", "-h", "0.0.0.0", "-p", "4000"]
+RUN pip install poetry && apt-get install firefox -y
+
+RUN poetry install --no-interaction --no-ansi
+
+CMD ["/bin/bash","-c","dagit -h 0.0.0.0 -p ${DAGSTER_PORT} & dagster-daemon run"]
