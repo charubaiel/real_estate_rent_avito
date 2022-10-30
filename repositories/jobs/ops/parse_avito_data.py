@@ -1,12 +1,7 @@
-import time
-
-import numpy as np
-import pandas as pd
-from bs4 import BeautifulSoup
 from dagster import asset
 from repositories.jobs.ops.support_funcs import (DatabaseConnection,
                                                  SeleniumConnection,
-                                                 featuring_data, get_item_info)
+                                                 update_db)
 
 
 @asset(description='get list of pages to parse')
@@ -15,37 +10,27 @@ def get_urls(context) -> str:
 
 
 @asset(description='collect raw html data',)
-def fetch_pages(context, get_urls: str) -> list:
-
+def fetch_pages(context, get_urls: str) -> None:
+    db = DatabaseConnection(context.op_config['db_path'])
     parser = SeleniumConnection()
-    pages = []
 
-    for page in range(1, context.op_config['n_pages']+1):
+    for page in range(2, context.op_config['n_pages']+1):
 
-        time.sleep(np.random.poisson(context.op_config['sleep_time']))
-        get_urls = get_urls.replace('&p=1', f'&p={page}')
         response = parser.get(get_urls)
+        get_urls = get_urls.replace(f'&p={page-1}', f'&p={page}')
         if 'Продажа квартир в Москве' not in parser.parser.find_element('xpath', '//*[@id="app"]/div/div[3]/div[2]').text:
             break
+        update_db(response,db_resourse=db)
+        parse_stats = db.query('select count(*) as ttl_ads, count(distinct url) as uniq_ads from INTEL.avito_RE ').df()
         context.log.info(
-            f'Parsed pages : {page}/{context.op_config["n_pages"]}')
-        pages.append(response)
-
-    parser.close_conn()
-    return pages
-
-
-@asset(description='extract structure data from html')
-def update_db(context, fetch_pages: list) -> None:
-    db = DatabaseConnection(context.op_config['db_path'])
-    raw_data = []
-    for html_data in fetch_pages:
-        bs_data = BeautifulSoup(html_data, features='lxml')
-        html_item_list = bs_data.find(
-            'div', {'class': 'items-items-kAJAg'}).findAll('div', {'data-marker': 'item'})
-        df_scheme = [get_item_info(i) for i in html_item_list]
-        db.append_df(pd.DataFrame(df_scheme), schema='RAW')
-        raw_data.extend(df_scheme)
-    feature_rich_data = featuring_data(pd.DataFrame(df_scheme))
-    db.append_df(feature_rich_data, schema='INTEL')
+            f'''Parsed pages : {page}/{context.op_config["n_pages"]}
+                total ads :{parse_stats.loc[0,'ttl_ads']}
+                uniq ads :{parse_stats.loc[0,'uniq_ads']}
+            '''
+            )
     db.close_conn()
+    parser.close_conn()
+
+
+
+
