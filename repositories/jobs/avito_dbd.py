@@ -1,25 +1,21 @@
 
-from repositories.jobs.ops.parse_avito_data import featuring_data, html_pages,item_list,get_data_graph
-from repositories.jobs.ops.support_funcs import get_urls, save_to_sql
-from dagster import job,config_from_files,schedule
+from dagster import define_asset_job,schedule
 
 
-
-
-
-@job(config=config_from_files(['params/rent_yaml.yaml']))
-def parse_avito_data():
-    urls_list = get_urls()  
-
-    complete_data = get_data_graph(urls_list)
-
-    save_to_sql(complete_data)
+parse_avito_job = define_asset_job(name='update_avito',
+                                    config={'ops': {"get_urls": {"config": {'url':'https://www.avito.ru/moskva/kvartiry/prodam-ASgBAgICAUSSA8YQ?cd=1&f=ASgBAQICAkSSA8YQwMENuv03A0DKCCSCWYRZjt4OFAKQ3g4UAg&i=1&p=1&s=104'}},
+                                                    "fetch_pages": {"config": {"sleep_time": 5,
+                                                                                'n_pages': 10}},
+                                                    "update_db":{'config':{'db_path':'data/avito_db.duckdb'}},
+                                                    },
+                                                    },
+                                    tags={"dagster/max_retries": 1, "dagster/retry_strategy": "ALL_STEPS"})
 
 
 
 @schedule(
     cron_schedule="15 */6 * * *",
-    job=parse_avito_data,
+    job=parse_avito_job,
     execution_timezone="Europe/Moscow",
 )
 def avito_schedule():

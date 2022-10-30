@@ -1,33 +1,19 @@
-from dagster import op
-import sqlite3
+import duckdb
 import pandas as pd
-
-@op(description='get list of pages to parse')
-def get_urls(context)->str:
-    return context.op_config['url']
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 
-@op(description='save_result to local sql table')
-def save_to_sql(context,df)-> None:
-    params = context.op_config
+HEADERS={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Edg/97.0.1072.62',
+    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'}
 
-    with sqlite3.connect(f'data/{params["db_name"]}') as conn:
-        
-        df.to_sql(con=conn, index=False,
-                    name=params['table_name'],
-                    if_exists='append')
+GEKO_DRIVER_PATH = 'repositories/jobs/ops/geckodriver'
 
-        tables = pd.read_sql(
-            "select name from sqlite_master where type='table' ", con=conn)
-        for i in tables['name']:
-            context.log.info('table {}  values: unique {} | ttl {}'
-                       .format(i, *pd.read_sql(f"select count(distinct id) as uniq_ids,\
-                                         count(id) as ttl_ids from {i} ", con=conn).values[0]))
 
 def get_item_info(item):
     item_desc = {}
     try:
-        item_desc['datetime'] = pd.to_datetime('now')
+        item_desc['datetime'] = pd.to_datetime('now',utc=True)
         item_desc['publish_delta'] = item.find('div',{'data-marker':'item-date'}).text
         item_desc['id'] = item['id']
         item_desc['url'] = item.a['href']
@@ -46,3 +32,51 @@ def get_item_info(item):
         pass
 
     return item_desc
+
+
+def featuring_data(item_list:list)->pd.DataFrame:
+    data = pd.DataFrame(item_list)
+    data['price'] = data['price'].astype(float)
+    data['street']= data['adress'].str.extract('(.*?), (?=\d.*)')
+    data['is_new']= data['JK'] == ''
+    data['n_rooms']=data['title'].str.extract('«(.*?),')
+    data['m2'] = data['title'].str.extract(', (\d+).*м²').astype(float)
+    data[['floor','max_floor']] = data['title'].str.extract('(\d+/\d+).*эт')[0].str.split('/',expand=True).astype(float)
+    data['text'] = data['text'].str.replace('\n','')
+    data['rubm2'] = data['price'] / data['m2']
+    data.drop(['title','adress'],axis=1,inplace=True)
+    return data
+
+
+class DatabaseConnection:
+    def __init__(self, connection_path: str):
+        self.connection =  duckdb.connect(connection_path)
+    def query(self,SQL):
+        self.connection.execute(SQL)
+    def close_conn(self):
+        self.connection.close()
+    def append_df(self,df:pd.DataFrame,schema:str='RAW'):
+
+        self.connection.execute(f'''
+                    CREATE SCHEMA IF NOT EXISTS {schema};
+                    CREATE TABLE IF NOT EXISTS {schema}.avito_RE as select * from df TABLESAMPLE 0;
+                    INSERT INTO {schema}.avito_RE select * from df;
+                    ''')
+
+
+class SeleniumConnection:
+    def __init__(self):
+        firefox_options = Options()
+        firefox_options.headless = True
+        firefox_options.add_argument(f"HEADERS={HEADERS}")
+        self.parser = webdriver.Firefox(options=firefox_options,
+                                        executable_path=GEKO_DRIVER_PATH)
+
+    def get(self,url):
+        self.parser.get(url)
+        self.html_data =  self.parser.find_element('xpath',"//*").get_attribute("outerHTML")
+        return self.html_data
+    
+    def close_conn(self):
+        self.parser.close()
+
