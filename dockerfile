@@ -13,7 +13,7 @@ COPY . /opt/dagster/app/
 
 RUN apt-get update
 
-RUN pip install poetry && apt-get install firefox -y
+RUN pip install poetry && apt-get install -y --no-install-recommends firefox-esr 
 
 RUN poetry install --no-interaction --no-ansi
 
