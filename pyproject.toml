@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "real_estate_rent_avito"
+version = "0.1.0"
+description = ""
+authors = ["Charubaiel <aleksandrin.a@mail.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+dagster = "^0.15.5"
+dagit = "^0.15.5"
+dagster-postgres = "^0.15.5"
+dagster-docker = "^0.15.5"
+dagster-graphql = "^0.15.5"
+numpy = "^1.23.1"
+pandas = "^1.4.3"
+lxml = "^4.9.1"
+bs4 = "^0.0.1"
+duckdb = "^0.5.1"
+selenium = "^4.5.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

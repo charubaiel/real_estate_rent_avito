@@ -1,0 +1,3 @@
+load_from:
+  - python_file: repositories/avito_parse_rep.py
+      

@@ -1,16 +1,20 @@
-FROM python:3.10
+FROM python:3.8-slim
 
+ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ENV DAGSTER_PORT=3000
+ENV POETRY_VIRTUALENVS_CREATE=False
 
+RUN mkdir -p /opt/dagster/dagster_home /opt/dagster/app
+RUN touch /opt/dagster/dagster_home/dagster.yaml 
 
-COPY cron /etc/cron.d/cron
+WORKDIR /opt/dagster/app
 
-COPY . /home/project/
+COPY . /opt/dagster/app/
 
-RUN apt-get update && apt-get -y install cron && pip install --no-cache-dir -r /home/project/req.txt
+RUN apt-get update
 
+RUN pip install poetry && apt-get install -y --no-install-recommends firefox-esr 
 
-RUN touch /var/log/cron.log && crontab /etc/cron.d/cron
+RUN poetry install --no-interaction --no-ansi
 
-
-
-CMD ["/bin/bash", "-c", "cron && tail -f /var/log/cron.log"]
+CMD ["/bin/bash","-c","dagit -h 0.0.0.0 -p ${DAGSTER_PORT} & dagster-daemon run"]
