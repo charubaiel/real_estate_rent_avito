@@ -9,7 +9,8 @@ parse_avito_agency_job = define_asset_job(name='update_agency_avito',
                                     config={'ops': {"get_urls": {"config": {'url':agency_ads}},
                                                     "fetch_pages": {"config": {
                                                                                 'n_pages': 10,
-                                                                                'db_path':'data/avito_agency_db.duckdb'
+                                                                                'db_path':'data/RE_moscow_db.duckdb',
+                                                                                'table_name':'agency_ads',
                                                                                 }},
                                                     },
                                                     },
@@ -19,7 +20,8 @@ parse_avito_users_job = define_asset_job(name='update_users_avito',
                                     config={'ops': {"get_urls": {"config": {'url':users_ads}},
                                                     "fetch_pages": {"config": {
                                                                                 'n_pages': 6,
-                                                                                'db_path':'data/avito_user_db.duckdb'
+                                                                                'db_path':'data/RE_moscow_db.duckdb',
+                                                                                'table_name':'user_ads',
                                                                                 }},
                                                     },
                                                     },
@@ -29,7 +31,8 @@ parse_avito_builders_job = define_asset_job(name='update_builders_avito',
                                     config={'ops': {"get_urls": {"config": {'url':builders_ads}},
                                                     "fetch_pages": {"config": {
                                                                                 'n_pages': 14,
-                                                                                'db_path':'data/avito_builder_db.duckdb'
+                                                                                'db_path':'data/RE_moscow_db.duckdb',
+                                                                                'table_name':'builder_ads',
                                                                                 }},
                                                     },
                                                     },

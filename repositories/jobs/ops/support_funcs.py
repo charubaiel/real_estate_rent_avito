@@ -22,11 +22,10 @@ class DatabaseConnection:
         return self.connection.execute(SQL)
     def close_conn(self):
         self.connection.close()
-    def append_df(self,df:pd.DataFrame,schema:str='RAW'):
+    def append_df(self,df:pd.DataFrame,table_name:str):
         self.connection.execute(f'''
-                    CREATE SCHEMA IF NOT EXISTS {schema};
-                    CREATE TABLE IF NOT EXISTS {schema}.avito_RE as select * from df TABLESAMPLE 0;
-                    INSERT INTO {schema}.avito_RE select * from df;
+                    CREATE TABLE IF NOT EXISTS {table_name} as select * from df TABLESAMPLE 0;
+                    INSERT INTO {table_name} select * from df;
                     ''')
 
 
@@ -83,18 +82,17 @@ def featuring_data(item_list:list)->pd.DataFrame:
     data[['floor','max_floor']] = data['title'].str.extract('(\d+/\d+).*эт')[0].str.split('/',expand=True).astype(float)
     data['text'] = data['text'].str.replace('\n','')
     data['rubm2'] = data['price'] / data['m2']
-    data.drop(['title','adress'],axis=1,inplace=True)
+    data.drop(['title'],axis=1,inplace=True)
     return data
 
 
 
-def update_db(html_data,db_resourse:DatabaseConnection) -> None:
+def update_db(html_data,db_resourse:DatabaseConnection,table_name:str) -> None:
     bs_data = BeautifulSoup(html_data, features='lxml')
     html_item_list = bs_data.find(
         'div', {'class': 'items-items-kAJAg'}).findAll('div', {'data-marker': 'item'})
     df_scheme = [get_item_info(i) for i in html_item_list]
-    db_resourse.append_df(pd.DataFrame(df_scheme), schema='RAW')
     feature_rich_data = featuring_data(pd.DataFrame(df_scheme))
-    db_resourse.append_df(feature_rich_data, schema='INTEL')
+    db_resourse.append_df(feature_rich_data, table_name=table_name)
 
 

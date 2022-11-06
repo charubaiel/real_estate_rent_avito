@@ -20,8 +20,12 @@ def fetch_pages(context, get_urls: str) -> None:
         get_urls = get_urls.replace(f'&p={page-1}', f'&p={page}')
         if 'Продажа квартир в Москве' not in parser.parser.find_element('xpath', '//*[@id="app"]/div/div[3]/div[2]').text:
             break
-        update_db(response,db_resourse=db)
-        parse_stats = db.query('select count(*) as ttl_ads, count(distinct url) as uniq_ads from INTEL.avito_RE ').df()
+        
+        update_db(response,
+                db_resourse=db,
+                table_name=context.op_config['table_name'])
+                
+        parse_stats = db.query(f"select count(*) as ttl_ads, count(distinct url) as uniq_ads from {context.op_config['table_name']} ").df()
         context.log.info(
             f'''Parsed pages : {page}/{context.op_config["n_pages"]}
                 total ads :{parse_stats.loc[0,'ttl_ads']}
