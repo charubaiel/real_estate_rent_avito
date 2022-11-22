@@ -25,7 +25,7 @@ class DatabaseConnection:
     def append_df(self,df:pd.DataFrame,table_name:str):
         self.connection.execute(f'''
                     CREATE TABLE IF NOT EXISTS {table_name} as select * from df TABLESAMPLE 0;
-                    INSERT INTO {table_name} select * from df;
+                    INSERT INTO {table_name}({",".join(df.columns)}) select * from df;
                     ''')
 
 
