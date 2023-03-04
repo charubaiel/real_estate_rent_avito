@@ -41,7 +41,7 @@ parse_avito_builders_job = define_asset_job(name='update_builders_avito',
 
 
 @schedule(
-    cron_schedule="39 */10 * * *",
+    cron_schedule="39 19/20 * * *",
     job=parse_avito_agency_job,
     execution_timezone="Europe/Moscow",
 )
